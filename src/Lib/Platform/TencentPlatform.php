@@ -3,10 +3,11 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Map\Lib\Location;
+use Magein\Map\Lib\Map;
 
-class TencentPlatform extends MapPlatform
+class TencentPlatform extends Map implements MapPlatform
 {
-    protected $domain = 'https://apis.map.qq.com';
+    protected string $domain = 'https://apis.map.qq.com';
 
     public function name(): string
     {
@@ -22,7 +23,7 @@ class TencentPlatform extends MapPlatform
             $params = array_merge($params, $other);
         }
 
-        $this->request('ws/geocoder/v1/', $params);
+        $data = $this->request('ws/geocoder/v1/', $params);
 
         return $this->content['location'] ?? '';
     }
@@ -31,7 +32,7 @@ class TencentPlatform extends MapPlatform
     {
         $location = new Location($location);
 
-        $params['location'] = $location->latitude() . ',' . $location->longitude();
+        $params['location'] = $location->getLatitude() . ',' . $location->getLongitude();
 
         $this->request('ws/geocoder/v1/', $params);
 

@@ -7,11 +7,12 @@ return [
         'platform' => \Magein\Map\Lib\Platform\TencentPlatform::class,
 
         /**
-         * 一般第三方平台会限制接口请求次数，keys可以采用多个的方式绕过
+         * 一般第三方平台会限制接口请求次数,可以采用多个keys的方式绕过
          *
          * 1 指定
          * 2 随机
          */
+
         'key_mode' => 1
     ],
 
@@ -22,10 +23,16 @@ return [
         'keys' => [],
     ],
 
+    /**
+     * 百度的配置
+     */
     'baidu' => [
         'keys' => [],
     ],
 
+    /**
+     * 高德的配置
+     */
     'gaode' => [
         'keys' => [],
     ]

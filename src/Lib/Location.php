@@ -34,27 +34,41 @@ class Location
     }
 
     /**
-     * 经度
      * @return string
      */
-    public function longitude()
+    public function getLongitude(): string
     {
         return $this->longitude;
     }
 
     /**
-     * 维度
-     * @return string
+     * @param string $longitude
      */
-    public function latitude()
+    public function setLongitude(string $longitude): void
     {
-        return $this->latitude;
+        $this->longitude = $longitude;
     }
 
     /**
      * @return string
      */
-    public function toString()
+    public function getLatitude(): string
+    {
+        return $this->latitude;
+    }
+
+    /**
+     * @param string $latitude
+     */
+    public function setLatitude(string $latitude): void
+    {
+        $this->latitude = $latitude;
+    }
+
+    /**
+     * @return string
+     */
+    public function toString(): string
     {
         if ($this->longitude && $this->latitude) {
             return $this->longitude . ',' . $this->latitude;
