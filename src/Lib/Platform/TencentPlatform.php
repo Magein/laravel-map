@@ -3,9 +3,8 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Map\Lib\Location;
-use Magein\Map\Lib\Map;
 
-class TencentPlatform extends Map implements MapPlatform
+class TencentPlatform extends MapPlatform
 {
     protected string $domain = 'https://apis.map.qq.com';
 

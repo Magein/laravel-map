@@ -13,122 +13,32 @@ class Map
      */
     protected $platform = '';
 
-    /**
-     * 主机地址
-     * @var string
-     */
-    protected string $domain = '';
-
-    /**
-     * 请求地址
-     * @var string
-     */
-    public string $url = '';
-
-    /**
-     * 响应值
-     * @var string
-     */
-    public string $response = '';
-
-    /**
-     * 响应内容
-     * @var array
-     */
-    public array $content = [];
-
     public function __construct()
     {
         $platform = config('map.default') ?? TencentPlatform::class;
-        $this->platform($platform);
+        $this->platform = new $platform();
     }
 
-    /**
-     * @param string $platform
-     * @return $this
-     */
-    public function platform(string $platform): Map
+    public function address(string $address, $other = [])
     {
-        $this->platform = $platform;
-
-        return $this;
+        return $this->platform->address($address, $other);
     }
 
-    /**
-     * 获取key
-     * @return string
-     */
-    protected function appKey(): string
+    public function location(string $location, $other = [])
     {
-        $name = $this->platform->name();
-        if (!$name) {
-            return '';
-        }
-        $config = config('map') ?? [];
-        $key_mode = $config['default']['key_mode'] ?? 1;
-        $keys = $config[$name]['keys'];
-        if ($key_mode == 1) {
-            return $keys[rand(0, count($keys))] ?? '';
-        }
-        return $keys[0] ?? '';
+        return $this->platform->location($location, $other);
     }
 
-    /**
-     * @param string $url
-     * @return string
-     */
-    protected function url(string $url): string
+    public function ip(string $ip, array $other = [])
     {
-        return trim($this->domain, '/') . '/' . trim($url, '/') . '?key=' . $this->appKey();
-    }
-
-    /**
-     * @param $url
-     * @param $params
-     * @param string $method
-     * @return bool|MapResult|string
-     */
-    protected function request($url, $params, string $method = 'get')
-    {
-        $curl = curl_init();
-        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
-        curl_setopt($curl, CURLOPT_HEADER, false);
-
-        $url = $this->url($url);
-        if ($method == 'get') {
-            $url = $url . '&' . urldecode(http_build_query($params));
-        } else {
-            curl_setopt($curl, CURLOPT_POST, false);
-            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
-        }
-
-        $this->url = $url;
-
-        curl_setopt($curl, CURLOPT_URL, $url);
-        $data = curl_exec($curl);
-        if (curl_errno($curl)) {
-            curl_close($curl);
-            return new MapResult(curl_errno($curl), curl_error($curl));
-        }
-        curl_close($curl);
-
-        return $data;
+        return $this->platform->ip($ip, $other);
     }
 
     /**
      * @return Convert
      */
-    public function convert()
+    public function convert(): Convert
     {
         return new Convert();
-    }
-
-    public function __call($name, $arguments)
-    {
-        try {
-            $this->platform->$name($arguments);
-        } catch (\Exception $exception) {
-
-        }
     }
 }

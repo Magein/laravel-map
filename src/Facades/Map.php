@@ -2,14 +2,13 @@
 
 namespace Magein\Map\Facades;
 
-use Magein\Map\Lib\Convert;
+
 use Illuminate\Support\Facades\Facade;
 use Magein\Map\Lib\MapResult;
-use Magein\Map\Lib\Map as LibMap;
+use Magein\Map\Lib\Convert;
 
 /**
  * @method static Convert  convert()
- * @method static LibMap  platform(string $platform)
  * @method static MapResult  address($address, array $other = [])
  * @method static MapResult  location(string $phone = '')
  * @method static MapResult  ip(string $phone = '', $code = '', string $scene = '')

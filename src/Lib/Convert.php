@@ -19,9 +19,9 @@ class Convert
     public function inCircle(Location $location, Location $center, $radius): bool
     {
         if ($radius instanceof Location) {
-            $radius = $this->LineDistance($center, $radius);
+            $radius = $this->lineDistance($center, $radius);
         }
-        $distance = $this->LineDistance($location, $center);
+        $distance = $this->lineDistance($location, $center);
         if ($distance <= $radius) {
             return true;
         } else {
@@ -37,7 +37,7 @@ class Convert
      * @param Location $second
      * @return int
      */
-    public function LineDistance(Location $first, Location $second): int
+    public function lineDistance(Location $first, Location $second): int
     {
         // deg2rad()函数将角度转换为弧度
         $radLat1 = deg2rad($first->getLatitude());
