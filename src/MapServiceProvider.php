@@ -6,7 +6,7 @@ use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Magein\Map\Lib\Map;
 
-class SmsServiceProvider extends ServiceProvider implements DeferrableProvider
+class MapServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register services.
