@@ -15,11 +15,6 @@ class SmsServiceProvider extends ServiceProvider implements DeferrableProvider
      */
     public function register()
     {
-        // 加载函数
-        if (is_file(__DIR__ . '/Common.php')) {
-            require_once __DIR__ . '/Common.php';
-        }
-
         $this->mergeConfigFrom(__DIR__ . '/Config.php', 'map');
     }
 
