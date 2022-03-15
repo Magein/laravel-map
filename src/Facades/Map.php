@@ -3,13 +3,12 @@
 namespace Magein\Map\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Magein\Map\Lib\Convert;
+use Magein\Common\Location;
 
 /**
- * @method static Convert  convert()
- * @method static address($address, array $other = [])
- * @method static location(string $phone = '')
- * @method static ip(string $phone = '', $code = '', string $scene = '')
+ * @method static Location address($params)
+ * @method static array location($params)
+ * @method static array ip($params)
  */
 class Map extends Facade
 {

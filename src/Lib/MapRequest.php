@@ -4,19 +4,15 @@ namespace Magein\Map\Lib;
 
 use Magein\Common\Finish;
 
-class Map
+trait MapRequest
 {
     /**
-     * 主机地址
-     * @var string
+     * @return string
      */
-    protected string $domain = '';
-
-    /**
-     * 响应值
-     * @var string
-     */
-    public string $response = '';
+    protected function name(): string
+    {
+        return '';
+    }
 
     /**
      * 获取key

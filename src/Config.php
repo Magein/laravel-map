@@ -4,7 +4,7 @@ return [
 
     'default' => [
         // 默认使用的平台
-        'platform' => \Magein\Map\Lib\Platform\TencentPlatform::class,
+        'platform' => \Magein\Map\Lib\Platform\TencentMap::class,
 
         /**
          * 一般第三方平台会限制接口请求次数,可以采用多个keys的方式绕过

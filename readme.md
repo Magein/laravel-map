@@ -9,19 +9,17 @@
 ```php
 
 // 根据地址获取经纬度
-\Magein\Map\Facades\Map::address();
-\Magein\Map\Facades\Map::location();
-\Magein\Map\Facades\Map::ip();
+\Magein\Map\Facades\Map::address($address);
+\Magein\Map\Facades\Map::address(['address'=>$address,'city'=>'杭州']);
+// 根据经纬度获取地址
+\Magein\Map\Facades\Map::location('123.456,15.1685');
+\Magein\Map\Facades\Map::location(['location'=>'123.456,15.1685']);
+// 根据ip获取信息
+\Magein\Map\Facades\Map::ip($ip);
+\Magein\Map\Facades\Map::ip(['ip'=>$ip]);
 
 // 指定平台
-$platform=new \Magein\Map\Lib\Platform\TencentPlatform();
-$platform->address();
-
-// 计算经纬度坐标的直线距离
-\Magein\Map\Facades\Map::convert()->lineDistance();
-// 计算经纬度是否处于一个园内
-\Magein\Map\Facades\Map::convert()->inCircle();
-// 计算经纬度是否处于一个多边形中
-\Magein\Map\Facades\Map::convert()->inPolygon();
-
+new \Magein\Map\Lib\Platform\TencentMap();
+new \Magein\Map\Lib\Platform\GaodeMap();
+new \Magein\Map\Lib\Platform\BaiduMap();
 ```
