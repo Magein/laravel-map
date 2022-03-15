@@ -31,4 +31,9 @@ class MapServiceProvider extends ServiceProvider implements DeferrableProvider
     {
 
     }
+
+    public function provides()
+    {
+        return ['map'];
+    }
 }
