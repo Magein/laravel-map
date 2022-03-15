@@ -2,43 +2,83 @@
 
 namespace Magein\Map\Lib;
 
-use Magein\Map\Lib\Platform\MapPlatform;
-use Magein\Map\Lib\Platform\TencentPlatform;
+use Magein\Common\Finish;
 
 class Map
 {
     /**
-     * 使用的平台
-     * @var MapPlatform|string
+     * 主机地址
+     * @var string
      */
-    protected $platform = '';
+    protected string $domain = '';
 
-    public function __construct()
-    {
-        $platform = config('map.default') ?? TencentPlatform::class;
-        $this->platform = new $platform();
-    }
+    /**
+     * 响应值
+     * @var string
+     */
+    public string $response = '';
 
-    public function address(string $address, $other = [])
+    /**
+     * 获取key
+     * @return string
+     */
+    protected function appKey(): string
     {
-        return $this->platform->address($address, $other);
-    }
-
-    public function location(string $location, $other = [])
-    {
-        return $this->platform->location($location, $other);
-    }
-
-    public function ip(string $ip, array $other = [])
-    {
-        return $this->platform->ip($ip, $other);
+        $name = $this->name();
+        if (!$name) {
+            return '';
+        }
+        $config = config('map') ?? [];
+        $keys = $config[$name]['keys'];
+        if (($config['default']['mode'] ?? 1) === 1) {
+            return $keys[rand(0, count($keys) - 1)] ?? '';
+        }
+        return $keys[0] ?? '';
     }
 
     /**
-     * @return Convert
+     * @param string $url
+     * @return string
      */
-    public function convert(): Convert
+    protected function url(string $url): string
     {
-        return new Convert();
+        $key = $this->appKey();
+        if (empty($key)) {
+            return '';
+        }
+        $url = trim($url, '/');
+        $url = trim($this->domain, '/') . '/' . $url;
+        return $url . '?key=' . $key;
+    }
+
+    /**
+     * @param string $url
+     * @param array $params
+     * @param string $method
+     * @return Finish
+     */
+    protected function request(string $url, array $params, string $method = 'get'): Finish
+    {
+        $curl = curl_init();
+        curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+        curl_setopt($curl, CURLOPT_HEADER, false);
+        $url = $this->url($url);
+        if (empty($url)) {
+            return Finish::error('请在配置文件中添加keys');
+        }
+        if ($method == 'get') {
+            $url = $url . '&' . urldecode(http_build_query($params));
+        } else {
+            curl_setopt($curl, CURLOPT_POST, false);
+            curl_setopt($curl, CURLOPT_POSTFIELDS, $params);
+        }
+        curl_setopt($curl, CURLOPT_URL, $url);
+        $data = curl_exec($curl);
+        if (curl_errno($curl)) {
+            curl_close($curl);
+            return Finish::error(curl_errno($curl), curl_error($curl));
+        }
+        curl_close($curl);
+        return Finish::success($data);
     }
 }

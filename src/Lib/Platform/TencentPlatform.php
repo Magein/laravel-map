@@ -2,9 +2,10 @@
 
 namespace Magein\Map\Lib\Platform;
 
-use Magein\Map\Lib\Location;
+use Magein\Common\Location;
+use Magein\Map\Lib\Map;
 
-class TencentPlatform extends MapPlatform
+class TencentPlatform extends Map implements MapPlatform
 {
     protected string $domain = 'https://apis.map.qq.com';
 
@@ -42,8 +43,12 @@ class TencentPlatform extends MapPlatform
     {
         $other['ip'] = $ip;
 
-        $this->request('ws/location/v1/ip', $other);
+        $result = $this->request('ws/location/v1/ip', $other);
 
-        return $this->content;
+        if ($result->fail()) {
+            return $result;
+        }
+
+        return $result->data()['result'] ?? [];
     }
 }
