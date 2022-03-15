@@ -2,10 +2,11 @@
 
 namespace Magein\Map;
 
+use Illuminate\Contracts\Support\DeferrableProvider;
 use Illuminate\Support\ServiceProvider;
 use Magein\Map\Lib\MapFactory;
 
-class MapServiceProvider extends ServiceProvider
+class MapServiceProvider extends ServiceProvider implements DeferrableProvider
 {
     /**
      * Register services.
@@ -16,7 +17,7 @@ class MapServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/Config.php', 'map');
 
-        $this->app->bind('map', function () {
+        $this->app->singleton('map', function () {
             return new MapFactory();
         });
     }

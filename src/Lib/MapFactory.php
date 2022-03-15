@@ -29,7 +29,7 @@ class MapFactory
 
         $this->platform = new $platform();
     }
-    
+
     public function address($params)
     {
         return $this->platform->address($params);
@@ -44,5 +44,4 @@ class MapFactory
     {
         return $this->platform->location($params);
     }
-
 }
