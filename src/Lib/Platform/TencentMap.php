@@ -27,7 +27,7 @@ class TencentMap extends Map implements MapPlatform
      * @return Location
      * @throws \Exception
      */
-    public function address($params)
+    public function address($params): Location
     {
         if (is_string($params)) {
             $address = $params;
@@ -40,6 +40,11 @@ class TencentMap extends Map implements MapPlatform
         return new Location($data['location'] ?? '');
     }
 
+    /**
+     * @param $params
+     * @return array
+     * @throws \Exception
+     */
     public function location($params): array
     {
         if (is_string($params)) {
@@ -49,25 +54,28 @@ class TencentMap extends Map implements MapPlatform
             $location = $params['location'] ?? '';
         }
 
-        $location = new Location($location);
+        $location = new Location(trim($location));
 
         $params['location'] = $location->getLatitude() . ',' . $location->getLongitude();
 
-        $this->request('ws/geocoder/v1/', $params);
+        $data = $this->request('ws/geocoder/v1/', $params);
 
-        return $result['address'] ?? [];
+        return $data ?? [];
     }
 
+    /**
+     * @param $params
+     * @return array
+     * @throws \Exception
+     */
     public function ip($params): array
     {
         if (is_string($params)) {
             $ip = $params;
             $params = [];
-            $params['ip'] = $ip;
+            $params['ip'] = trim($ip);
         }
 
-        $result = $this->request('ws/location/v1/ip', $params);
-
-        return $result['result'] ?? [];
+        return $this->request('ws/location/v1/ip', $params);
     }
 }

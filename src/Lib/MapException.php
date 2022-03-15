@@ -6,8 +6,14 @@ use Exception;
 
 class MapException
 {
+    /**
+     * @var string
+     */
     protected string $message = '';
 
+    /**
+     * @var int
+     */
     protected int $code = 1;
 
     /**
@@ -19,7 +25,7 @@ class MapException
     {
         $this->message = $message;
         $this->code = $code;
-        $this->throwException();
+        $this->isThrow();
     }
 
     /**
@@ -41,7 +47,7 @@ class MapException
     /**
      * @throws Exception
      */
-    protected function throwException()
+    protected function isThrow()
     {
         $debug = config('map.debug');
         if ($debug) {
