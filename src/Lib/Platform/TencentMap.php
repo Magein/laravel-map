@@ -3,13 +3,11 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Common\Location;
+use Magein\Map\Lib\Map;
 use Magein\Map\Lib\MapPlatform;
-use Magein\Map\Lib\MapRequest;
 
-class TencentMap implements MapPlatform
+class TencentMap extends Map implements MapPlatform
 {
-    use MapRequest;
-
     /**
      * 请求地址
      * @var string
@@ -27,8 +25,9 @@ class TencentMap implements MapPlatform
     /**
      * @param $params
      * @return Location
+     * @throws \Exception
      */
-    public function address($params): Location
+    public function address($params)
     {
         if (is_string($params)) {
             $address = $params;
@@ -38,7 +37,7 @@ class TencentMap implements MapPlatform
 
         $data = $this->request('ws/geocoder/v1/', $params);
 
-        return new Location($data['location']);
+        return new Location($data['location'] ?? '');
     }
 
     public function location($params): array

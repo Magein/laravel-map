@@ -4,8 +4,9 @@ namespace Magein\Map\Lib\Platform;
 
 use Magein\Common\Location;
 use Magein\Map\Lib\MapPlatform;
+use Magein\Map\Lib\Map;
 
-class BaiduMap implements MapPlatform
+class BaiduMap extends Map implements MapPlatform
 {
 
     public function name(): string

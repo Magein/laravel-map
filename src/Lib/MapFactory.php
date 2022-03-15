@@ -22,7 +22,7 @@ class MapFactory
      * @var MapPlatform
      */
     protected $platform = null;
-    
+
     public function __construct()
     {
         $platform = config('map.default.platform');
@@ -30,17 +30,17 @@ class MapFactory
         $this->platform = new $platform();
     }
 
-    public function address($params): Location
+    public function address($params)
     {
         return $this->platform->address($params);
     }
 
-    public function ip($params): array
+    public function ip($params)
     {
         return $this->platform->ip($params);
     }
 
-    public function location($params): array
+    public function location($params)
     {
         return $this->platform->location($params);
     }

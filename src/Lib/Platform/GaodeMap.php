@@ -4,8 +4,9 @@ namespace Magein\Map\Lib\Platform;
 
 use Magein\Common\Location;
 use Magein\Map\Lib\MapPlatform;
+use Magein\Map\Lib\Map;
 
-class GaodeMap implements MapPlatform
+class GaodeMap extends Map implements MapPlatform
 {
 
     public function name(): string
