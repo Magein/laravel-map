@@ -3,7 +3,7 @@
 namespace Magein\Map\Facades;
 
 use Illuminate\Support\Facades\Facade;
-use Magein\Common\Location;
+use Magein\Map\Lib\Location;
 
 /**
  * @method static Location address($params)

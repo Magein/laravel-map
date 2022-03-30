@@ -2,7 +2,7 @@
 
 namespace Magein\Map\Lib;
 
-use Magein\Common\Location;
+use Magein\Map\Lib\Location;
 
 class Convert
 {

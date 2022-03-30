@@ -2,11 +2,11 @@
 
 namespace Magein\Map\Lib\Platform;
 
-use Magein\Common\Location;
-use Magein\Map\Lib\Map;
+use Magein\Map\Lib\Location;
+use Magein\Map\Lib\MapInterface;
 use Magein\Map\Lib\MapPlatform;
 
-class TencentMap extends Map implements MapPlatform
+class TencentMap extends MapPlatform implements MapInterface
 {
     /**
      * 请求地址
@@ -24,28 +24,10 @@ class TencentMap extends Map implements MapPlatform
 
     /**
      * @param $params
-     * @return Location
-     * @throws \Exception
-     */
-    public function address($params): Location
-    {
-        if (is_string($params)) {
-            $address = $params;
-            $params = [];
-            $params['address'] = $address;
-        }
-
-        $data = $this->request('ws/geocoder/v1/', $params);
-
-        return new Location($data['location'] ?? '');
-    }
-
-    /**
-     * @param $params
      * @return array
      * @throws \Exception
      */
-    public function location($params): array
+    public function address($params): array
     {
         if (is_string($params)) {
             $location = $params;
@@ -63,6 +45,24 @@ class TencentMap extends Map implements MapPlatform
         return $data ?? [];
     }
 
+    /**
+     * @param $params
+     * @return Location
+     * @throws \Exception
+     */
+    public function location($params): Location
+    {
+        if (is_string($params)) {
+            $address = $params;
+            $params = [];
+            $params['address'] = $address;
+        }
+
+        $data = $this->request('ws/geocoder/v1/', $params);
+
+        return new Location($data['location'] ?? '');
+    }
+    
     /**
      * @param $params
      * @return array

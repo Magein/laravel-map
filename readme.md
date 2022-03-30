@@ -20,6 +20,6 @@
 
 // 指定平台
 new \Magein\Map\Lib\Platform\TencentMap();
-new \Magein\Map\Lib\Platform\GaodeMap();
+new \Magein\Map\Lib\Platform\GaoDeMap();
 new \Magein\Map\Lib\Platform\BaiduMap();
 ```

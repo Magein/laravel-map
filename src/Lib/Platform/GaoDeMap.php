@@ -6,12 +6,12 @@ use Magein\Map\Lib\Location;
 use Magein\Map\Lib\MapInterface;
 use Magein\Map\Lib\MapPlatform;
 
-class BaiduMap extends MapPlatform implements MapInterface
+class GaoDeMap extends MapPlatform implements MapInterface
 {
 
     public function name(): string
     {
-        return 'baidu';
+        return 'gaode';
     }
 
     public function address($params): array
