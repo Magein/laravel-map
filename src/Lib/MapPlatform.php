@@ -22,7 +22,6 @@ abstract class MapPlatform
         if ($debug) {
             throw new \Exception($message, $code);
         }
-
         return null;
     }
 
