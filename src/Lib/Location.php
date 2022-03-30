@@ -10,7 +10,7 @@ namespace Magein\Map\Lib;
  * 经度: 73.66~135.05
  *
  */
-class Location
+class Location implements \ArrayAccess
 {
     /**
      * 经度
@@ -138,5 +138,25 @@ class Location
             $this->longitude = $first;
         }
 
+    }
+
+    public function offsetExists($offset)
+    {
+        // TODO: Implement offsetExists() method.
+    }
+
+    public function offsetGet($offset)
+    {
+        // TODO: Implement offsetGet() method.
+    }
+
+    public function offsetSet($offset, $value)
+    {
+        // TODO: Implement offsetSet() method.
+    }
+
+    public function offsetUnset($offset)
+    {
+        // TODO: Implement offsetUnset() method.
     }
 }

@@ -11,6 +11,24 @@ abstract class MapPlatform
     protected string $domain = '';
 
     /**
+     * 身份标识
+     * @var string
+     */
+    protected string $sign_field = 'key';
+
+    /**
+     * 返回值类型标识
+     * @var string
+     */
+    protected string $output_field = 'output';
+
+    /**
+     * 返回值类型
+     * @var string
+     */
+    protected string $output = 'json';
+
+    /**
      * 响应结果
      * @var string
      */
@@ -64,12 +82,15 @@ abstract class MapPlatform
         if (empty($key)) {
             return $this->setError('请配置keys');
         }
-        $params['key'] = $key;
+        $params[$this->sign_field] = $key;
+        $params[$this->output_field] = $this->output;
         $url = $this->url($url) . '?' . urldecode(http_build_query($params));
+
         $curl = curl_init($url);
         curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
         curl_setopt($curl, CURLOPT_HEADER, false);
         $data = curl_exec($curl);
+        
         if (curl_errno($curl)) {
             curl_close($curl);
             return $this->setError(curl_errno($curl), curl_errno($curl));
@@ -86,20 +107,6 @@ abstract class MapPlatform
      */
     protected function result($data)
     {
-        if (empty($data)) {
-            return [];
-        }
-
-        $data = json_decode($data, true);
-
-        $status = $data['status'] ?? -1;
-
-        if ($status == 0) {
-            return $data['result'] ?? [];
-        }
-
-        $this->setError($data['message'] ?? '');
-
         return [];
     }
 }

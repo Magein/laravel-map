@@ -62,7 +62,7 @@ class TencentMap extends MapPlatform implements MapInterface
 
         return new Location($data['location'] ?? '');
     }
-    
+
     /**
      * @param $params
      * @return array
@@ -77,5 +77,29 @@ class TencentMap extends MapPlatform implements MapInterface
         }
 
         return $this->request('ws/location/v1/ip', $params);
+    }
+
+    /**
+     * @param $data
+     * @return mixed|string
+     * @throws \Exception
+     */
+    protected function result($data)
+    {
+        if (empty($data)) {
+            return [];
+        }
+
+        $data = json_decode($data, true);
+
+        $status = $data['status'] ?? -1;
+
+        if ($status == 0) {
+            return $data['result'] ?? [];
+        }
+        
+        $this->setError($data['message'] ?? '');
+
+        return [];
     }
 }
