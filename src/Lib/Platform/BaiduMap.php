@@ -42,6 +42,7 @@ class BaiduMap extends MapPlatform implements MapInterface
         $mapAddress->setProvince($info['province']);
         $mapAddress->setCity($info['city']);
         $mapAddress->setDistrict($info['district']);
+        $mapAddress->setAddress($data['result']['formatted_address'] ?? '');
 
         return $mapAddress;
     }

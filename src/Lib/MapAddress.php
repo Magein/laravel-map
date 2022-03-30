@@ -82,6 +82,19 @@ class MapAddress implements \ArrayAccess
     }
 
     /**
+     * @param string $city
+     */
+    public function setAddress(string $address): void
+    {
+        $this->address = $address;
+    }
+
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
      * @param string $district
      */
     public function setDistrict(string $district): void
@@ -92,11 +105,6 @@ class MapAddress implements \ArrayAccess
     public function toString($sp = ','): string
     {
         return trim(implode($sp, $this->toArray()), $sp);
-    }
-
-    public function getAddress()
-    {
-        return $this->toString('');
     }
 
     public function toArray(): array

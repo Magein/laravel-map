@@ -45,9 +45,10 @@ class TencentMap extends MapPlatform implements MapInterface
 
         $info = $data['ad_info'] ?? [];
         $mapAddress = new MapAddress($data);
-        $mapAddress->setProvince($info['province']);
-        $mapAddress->setCity($info['city']);
-        $mapAddress->setDistrict($info['district']);
+        $mapAddress->setProvince($info['province'] ?? '');
+        $mapAddress->setCity($info['city'] ?? '');
+        $mapAddress->setDistrict($info['district'] ?? '');
+        $mapAddress->setAddress($data['address'] ?? '');
 
         return $mapAddress;
     }
