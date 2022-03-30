@@ -3,6 +3,7 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Map\Lib\Location;
+use Magein\Map\Lib\MapAddress;
 use Magein\Map\Lib\MapInterface;
 use Magein\Map\Lib\MapPlatform;
 
@@ -21,7 +22,7 @@ class BaiduMap extends MapPlatform implements MapInterface
         return 'baidu';
     }
 
-    public function address($params): array
+    public function address($params): MapAddress
     {
         if (is_string($params)) {
             $location = $params;
@@ -35,7 +36,14 @@ class BaiduMap extends MapPlatform implements MapInterface
 
         $data = $this->request('reverse_geocoding/v3', $params);
 
-        return $data['addressComponent'] ?? [];
+        $info = $data['result']['addressComponent'] ?? [];
+
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($info['province']);
+        $mapAddress->setCity($info['city']);
+        $mapAddress->setDistrict($info['district']);
+
+        return $mapAddress;
     }
 
     public function location($params): Location
@@ -47,16 +55,12 @@ class BaiduMap extends MapPlatform implements MapInterface
         }
 
         $data = $this->request('geocoding/v3', $params);
-
-        $location = '';
-        if (isset($data['location'])) {
-            $location = $data['location'];
-        }
+        $location = $data['result']['location'] ?? '';
 
         return new Location($location);
     }
 
-    public function ip($params): array
+    public function ip($params): MapAddress
     {
         if (is_string($params)) {
             $ip = $params;
@@ -64,7 +68,15 @@ class BaiduMap extends MapPlatform implements MapInterface
             $params['ip'] = trim($ip);
         }
 
-        return $this->request('location/ip', $params);
+        $data = $this->request('location/ip', $params);
+
+        $info = $data['content']['address_detail'] ?? [];
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($info['province']);
+        $mapAddress->setCity($info['city']);
+        $mapAddress->setDistrict($info['district']);
+
+        return $mapAddress;
     }
 
     /**

@@ -5,6 +5,8 @@ namespace Magein\Map\Lib;
 
 class MapAddress implements \ArrayAccess
 {
+    protected array $origin = [];
+
     /**
      * @var string
      */
@@ -19,6 +21,25 @@ class MapAddress implements \ArrayAccess
      * @var string
      */
     protected string $district = '';
+
+    /**
+     * 拼接好的地址
+     * @var string
+     */
+    protected string $address = '';
+
+    public function __construct($origin = null)
+    {
+        $this->origin = $origin;
+    }
+
+    /**
+     * @return array|mixed|null
+     */
+    public function getOrigin()
+    {
+        return $this->origin;
+    }
 
     /**
      * @return string
@@ -70,7 +91,12 @@ class MapAddress implements \ArrayAccess
 
     public function toString($sp = ','): string
     {
-        return implode($sp, $this->toArray());
+        return trim(implode($sp, $this->toArray()), $sp);
+    }
+
+    public function getAddress()
+    {
+        return $this->toString('');
     }
 
     public function toArray(): array
@@ -84,12 +110,21 @@ class MapAddress implements \ArrayAccess
 
     public function offsetExists($offset)
     {
+        if (property_exists($this, $offset)) {
+            return true;
+        }
 
+        return false;
     }
 
     public function offsetGet($offset)
     {
+        if (property_exists($this, $offset)) {
+            $offset = 'get' . ucfirst($offset);
+            return $this->$offset();
+        }
 
+        return null;
     }
 
     public function offsetSet($offset, $value)

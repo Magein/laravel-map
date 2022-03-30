@@ -142,21 +142,43 @@ class Location implements \ArrayAccess
 
     public function offsetExists($offset)
     {
-        // TODO: Implement offsetExists() method.
+
+        if ($offset == 'lat') {
+            $offset = 'latitude';
+        } elseif ($offset == 'lng') {
+            $offset = 'longitude';
+        }
+
+        if (property_exists($this, $offset)) {
+            return true;
+        }
+
+        return false;
     }
 
     public function offsetGet($offset)
     {
-        // TODO: Implement offsetGet() method.
+        if ($offset == 'lat') {
+            $offset = 'latitude';
+        } elseif ($offset == 'lng') {
+            $offset = 'longitude';
+        }
+
+        if (property_exists($this, $offset)) {
+            $offset = 'get' . ucfirst($offset);
+            return $this->$offset();
+        }
+
+        return false;
     }
 
     public function offsetSet($offset, $value)
     {
-        // TODO: Implement offsetSet() method.
+
     }
 
     public function offsetUnset($offset)
     {
-        // TODO: Implement offsetUnset() method.
+
     }
 }

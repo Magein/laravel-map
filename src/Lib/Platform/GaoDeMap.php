@@ -3,6 +3,7 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Map\Lib\Location;
+use Magein\Map\Lib\MapAddress;
 use Magein\Map\Lib\MapInterface;
 use Magein\Map\Lib\MapPlatform;
 
@@ -19,7 +20,7 @@ class GaoDeMap extends MapPlatform implements MapInterface
         return 'gaode';
     }
 
-    public function address($params): array
+    public function address($params): MapAddress
     {
         if (is_string($params)) {
             $location = $params;
@@ -30,10 +31,15 @@ class GaoDeMap extends MapPlatform implements MapInterface
 
         $location = new Location(trim($location));
         $params['location'] = $location->getLongitude() . ',' . $location->getLatitude();
-
         $data = $this->request('v3/geocode/regeo', $params);
 
-        return $data['regeocode'] ?? [];
+        $info = $data['regeocode']['addressComponent'] ?? [];
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($info['province']);
+        $mapAddress->setCity($info['city']);
+        $mapAddress->setDistrict($info['district']);
+
+        return $mapAddress;
     }
 
     public function location($params): Location
@@ -54,7 +60,7 @@ class GaoDeMap extends MapPlatform implements MapInterface
         return new Location($location);
     }
 
-    public function ip($params): array
+    public function ip($params): MapAddress
     {
         if (is_string($params)) {
             $ip = $params;
@@ -62,7 +68,13 @@ class GaoDeMap extends MapPlatform implements MapInterface
             $params['ip'] = trim($ip);
         }
 
-        return $this->request('v3/ip', $params);
+        $data = $this->request('v3/ip', $params);
+        
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($data['province']);
+        $mapAddress->setCity($data['city']);
+
+        return $mapAddress;
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Magein\Map\Lib\Platform;
 
 use Magein\Map\Lib\Location;
+use Magein\Map\Lib\MapAddress;
 use Magein\Map\Lib\MapInterface;
 use Magein\Map\Lib\MapPlatform;
 
@@ -24,10 +25,10 @@ class TencentMap extends MapPlatform implements MapInterface
 
     /**
      * @param $params
-     * @return array
+     * @return MapAddress
      * @throws \Exception
      */
-    public function address($params): array
+    public function address($params): MapAddress
     {
         if (is_string($params)) {
             $location = $params;
@@ -42,7 +43,13 @@ class TencentMap extends MapPlatform implements MapInterface
 
         $data = $this->request('ws/geocoder/v1/', $params);
 
-        return $data ?? [];
+        $info = $data['ad_info'] ?? [];
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($info['province']);
+        $mapAddress->setCity($info['city']);
+        $mapAddress->setDistrict($info['district']);
+
+        return $mapAddress;
     }
 
     /**
@@ -65,10 +72,10 @@ class TencentMap extends MapPlatform implements MapInterface
 
     /**
      * @param $params
-     * @return array
+     * @return MapAddress
      * @throws \Exception
      */
-    public function ip($params): array
+    public function ip($params): MapAddress
     {
         if (is_string($params)) {
             $ip = $params;
@@ -76,7 +83,14 @@ class TencentMap extends MapPlatform implements MapInterface
             $params['ip'] = trim($ip);
         }
 
-        return $this->request('ws/location/v1/ip', $params);
+        $data = $this->request('ws/location/v1/ip', $params);
+        $info = $data['ad_info'] ?? [];
+
+        $mapAddress = new MapAddress($data);
+        $mapAddress->setProvince($info['province']);
+        $mapAddress->setCity($info['city']);
+
+        return $mapAddress;
     }
 
     /**
@@ -97,7 +111,7 @@ class TencentMap extends MapPlatform implements MapInterface
         if ($status == 0) {
             return $data['result'] ?? [];
         }
-        
+
         $this->setError($data['message'] ?? '');
 
         return [];

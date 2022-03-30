@@ -13,9 +13,9 @@ interface MapInterface
     /**
      * 根据经纬度获取地址
      * @param string|array $params
-     * @return array
+     * @return MapAddress
      */
-    public function address($params): array;
+    public function address($params): MapAddress;
 
     /**
      * 根据地址获取经纬度
@@ -27,7 +27,7 @@ interface MapInterface
     /**
      * 根据IP定位城市，经纬度相关信息
      * @param string|array $params
-     * @return array
+     * @return MapAddress
      */
-    public function ip($params): array;
+    public function ip($params): MapAddress;
 }
